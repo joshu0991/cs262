@@ -17,18 +17,19 @@ bool encryptf(const char* key, const char* in_file_name, const char* out_file_na
     out_file = fopen(out_file_name, "a+");
     in_file = fopen(in_file_name, "a+");
     // check to see if files opened
-
-    printf("out %s\n", out_file_name);
-    printf("%s\n", in_file_name);
-    printf("%d\n", kasi);
+    if (out_file == NULL)
+        return FALSE;
+    if (in_file == NULL)
+       return FALSE;
+ 
     srand(kasi); 
+    
     int r = 0;
-    //r = rand() % 97;
     char p, p1, c, c1;
+    
     while((p = fgetc(in_file)) != EOF)
     {
-        printf("the char value is %c\n", p); 
-    r = rand() % 97;
+        r = rand() % 97;
         if (p == '\t')
         {
             p1 = '0';
@@ -41,16 +42,14 @@ bool encryptf(const char* key, const char* in_file_name, const char* out_file_na
         {
             p1 = p - 30;
         }
-
-       printf(" p1 is %c\n", p1);
        
         c1 = p1 ^ r;
-     printf("c1 is %c\n", c1);
-        if (c1 == 0)
+      
+        if (c1 == '0')
         {
             c = '\t';
         }
-        else if (c1 == 1)
+        else if (c1 == '1')
         {
             c = '\n';
         }
@@ -58,7 +57,6 @@ bool encryptf(const char* key, const char* in_file_name, const char* out_file_na
         {
             c = c1 + 30;
         }
-        printf("----------%c\n", c);    
         fputc(c, out_file); 
     }
     fclose (out_file);
@@ -70,5 +68,7 @@ int main(int argc, char** argv)
 {
     int i;
     if (argc == 4)
-    encryptf(argv[1], argv[2], argv[3]);
+    {
+        bool success = encryptf(argv[1], argv[2], argv[3]);
+    }
 }
