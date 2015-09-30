@@ -7,6 +7,9 @@ typedef enum bool
     TRUE
 } bool;
 
+
+bool encryptf(const char* key, const char* in_file_name, const char* out_file_name);
+
 // Return true on success false on failure.
 bool encryptf(const char* key, const char* in_file_name, const char* out_file_name)
 {
@@ -14,8 +17,8 @@ bool encryptf(const char* key, const char* in_file_name, const char* out_file_na
     FILE* in_file;
 
     int kasi = atoi(key); 
-    out_file = fopen(out_file_name, "a+");
-    in_file = fopen(in_file_name, "a+");
+    out_file = fopen(out_file_name, "w");
+    in_file = fopen(in_file_name, "r");
     // check to see if files opened
     if (out_file == NULL)
         return FALSE;
@@ -66,9 +69,15 @@ bool encryptf(const char* key, const char* in_file_name, const char* out_file_na
 
 int main(int argc, char** argv)
 {
-    int i;
     if (argc == 4)
     {
         bool success = encryptf(argv[1], argv[2], argv[3]);
+        if (success)
+        {
+            printf("encryption/decription successful");
+            return 0;
+        }
+        return 1;
     }
+    return 1;
 }
