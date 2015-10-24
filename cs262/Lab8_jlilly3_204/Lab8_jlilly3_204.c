@@ -20,12 +20,13 @@ void runMenu();
 void add_location(struct location** p_location_array, int* p_array_size, int* p_current_size);
 void resize_array(struct location** p_location_array, int* p_array_size);
 void print (struct location* p_array, int p_current_size);
+void chop (char* p_chop);
 
 // Print out the main menu to the user.
 void runMenu()
 {
     printf("[A]dd additional Locations\n");
-    printf("[P]rint the current list of locations\n");\
+    printf("[P]rint the current list of locations\n");
     printf("[Q]uit the program\n");
 }
 
@@ -55,10 +56,10 @@ void add_location(struct location** p_location_array, int* p_array_size, int* p_
 {
     // Get the users input
     struct location new_location;
-    printf("Enter the new location name\n ");
-    fscanf(stdin, "%s", new_location.loc_name); 
+    printf("Enter the new location name:\n");
+    fgets(new_location.loc_name, 35, stdin);
     printf("Enter a description of the location\n");
-    fscanf(stdin, "%s", new_location.description),
+    fgets(new_location.description, 85, stdin);
     printf("Enter the latitude\n");
     fscanf(stdin, "%f", &new_location.latitude);
     printf("Enter the longitude\n");
@@ -78,14 +79,22 @@ void add_location(struct location** p_location_array, int* p_array_size, int* p_
 void print (struct location* p_array, int p_current_size)
 {
     int i;
+    printf("|%-35s | %-85s | %s   |   %s\n", "Location name:", "Description:", "Latitude:", "Longitude:"); 
     for (i = 0; i < p_current_size; i++)
     {
         struct location current = p_array[i];
-        printf("%s :  %s  : %f : %f\n", current.loc_name, current.description, current.latitude, current.longitude);
+        chop (current.loc_name);
+        chop (current.description);
+        printf("|%-35s | %-85s | %f    |    %f\n", current.loc_name, current.description, current.latitude, current.longitude);
     } 
 }
 
-
+void chop (char* p_chop)
+{
+    size_t ln = strlen(p_chop) - 1;
+    if (p_chop[ln] == '\n')
+        p_chop[ln] = '\0';
+}
 
 int main()
 {
@@ -96,7 +105,8 @@ int main()
  
     printf("Enter the inital size of the array\n");
     scanf(" %d", &size);
- 
+    while((getchar())!='\n')
+    ;
     // Make a new struct array from the heap
     struct location* m_location_array = 
          malloc(size * sizeof(struct location));
@@ -109,6 +119,8 @@ int main()
     {
         runMenu();
         scanf(" %c", &choice);
+        while((getchar())!='\n')
+        ;
 
         switch (choice)
         {
