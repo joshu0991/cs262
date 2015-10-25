@@ -1,0 +1,113 @@
+Script started on Sat 03 Oct 2015 04:17:51 PM EDT
+[?1034hbash-4.1$ uname -a
+Linux zeus-1 2.6.32-573.7.1.el6.centos.plus.x86_64 #1 SMP Wed Sep 23 03:02:55 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+bash-4.1$ ls
+Makefile  project1_jlilly3_typescript_204  symetric_encrypt.c
+bash-4.1$ make
+gcc -o symetric_encrypt symetric_encrypt.c -Wall -g
+bash-4.1$ ./symetric_encrypt 561467 symetric_encrypt.c out.enc
+encryption/decription successful
+bash-4.1$ cat symetric_encrypt.c 
+// Joshua Lilly G00561467
+// CS 262, Project I Lab section 204
+// September 21, 2015
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef enum bool
+{
+    FALSE,
+    TRUE
+} bool;
+
+
+bool encryptf(const char* key, const char* in_file_name, const char* out_file_name);
+
+// Return true on success false on failure.
+bool encryptf(const char* key, const char* in_file_name, const char* out_file_name)
+{
+    FILE* out_file;
+    FILE* in_file;
+
+    int kasi = atoi(key); 
+    out_file = fopen(out_file_name, "w");
+    in_file = fopen(in_file_name, "r");
+
+    // check to see if files opened
+    if (!out_file)
+        return FALSE;
+    if (!in_file)
+       return FALSE;
+ 
+    // Seed random
+    srand(kasi); 
+    
+    int r = 0;
+    char p, p1, c, c1;
+    
+    while((p = fgetc(in_file)) != -1)
+    {
+        r = rand() % 97;
+        if (p == '\t')
+        {
+            p1 = '0';
+        }
+        else if (p == '\n')
+        {
+            p1 = '1';
+        }
+        else
+        {
+            p1 = p - 30;
+        }
+       
+        c1 = p1 ^ r;
+      
+        if (c1 == '0')
+        {
+            c = '\t';
+        }
+        else if (c1 == '1')
+        {
+            c = '\n';
+        }
+        else
+        {
+            c = c1 + 30;
+        }
+        fputc(c, out_file); 
+    }
+    fclose (out_file);
+    fclose (in_file);
+    return TRUE;
+}
+
+int main(int argc, char** argv)
+{
+    // 4 since program name key infile outfile for successful input
+    if (argc == 4)
+    {
+        bool success = encryptf(argv[1], argv[2], argv[3]);
+        if (success)
+        {
+            printf("encryption/decription successful\n");
+            return 0;
+        }
+        return 1;
+    }
+    return 1;
+}
+bash-4.1$ cat out.enc 
+1PEñäàmÄaTñpwâê.Jf6*|=Z;oôYgKésp@yn:>Soëï{="['?à}á:ì=a0í{rGQ#:d#K;èÇôo~_u2c/),xn}póùe;hêõälwp!6_u(pVcFÑh^52|c9u<}+}É!ÜzLtã[)1.h :s'80vp/5è_Ö~m	xåI63ç];dX*nFÖê2å/Séä9u$Ü:BaáÑïkyná1_èÇ!éã50î9de1!"YÅ#áps;!úÇ4(íÜ^jXGg,}î-ãx{4(Éô<j!"oog0<ónIdUthgdÄ?y(q~C7~V#!./Å~ôy9;oâåîr$;à#ã_4Ñ|Gnòú{eh`Cïcx`$Çq>7e3m;y2-â-á:tw"{)2ñTr=nj(Zà0i9<tgânä5ká5lp]ëziapîöõ%_bblå-i3mJqv."I9akÉç{Äqìã3mrÑ
+o1ã#xB$X,1ÑU-!; i2Ö0ã}3%	+f5%.b2óm}=å:pLÉ}K]p1ákoävÅ,jxK&ô'à=~2ñ	SUFaDYUåne*FaÜuh{bÉ=9{Ü],|:_~64?}êä_)@Fç&_^ we
+{ôée 1ìù*ztúz9ô:1{{qÑ%4ômÇl<*âVDxÅT]Ä(PcC9}3Üìd&;'1,5d"oaT;óùï(3/îs,â#~Ä|&< /Hweçì)ääài'|â;Eh\wCÄ,éä7a;vZJè6úCC7Eo/#vnuJQó9tcféä9/4=t}eQ;ÄÄzfVDEçí:gU'ì0>q/,I^('wí(tÄñ/r<ö`abjtê,çù|c}t EF#R3%.UÖ6rR^%(ÇXã	 eE=!	WEyn+3V9g+|"*ítstnkPVHts[h3Z9gâòÜ6MkwSJå&î/u@î2â!*ksoo]`MV5j0ñD{wf^C	gy/7[Eå(QDwä#ÅkX%P&#K|2xa[Äzo	hi>`ò_\nMjBj	i
+)eR
+AHT%ÅCdZPRJ3[QxB3y3UdRZu	2ôA1< Yp%2õñ.n]`H7KZEhÄHoÖ"[!^iBA+IêRM4obK%s':9Å|erqf]F8! H_^P?'Rj^/UP=3C/?GQCÇòFkw/G_ggdù6rÅ+hbtV{\|dÉ?mU,\|cBEU[xkq 4aÅr;a/fYE
+_1j<$0(ÑKdoIRrBõ4"l]%W	8|c1{FonW/Ä(;5uWIc]0+qRC%\	^^eò8@!XH-QI`Gl`â-]TR_Kb:õ)dUtdU 5mc|5ÜF=r;#â0FôyCZvs^R2b&8pM|_lKKì%.x.fxCR(1Qf&yx!"]ï^*Zv<IuÄå0J$GQA]Tn>Qa?brC8^UìP.2ig:%	Q?$j~CZ>"64y] 4i`ö2=UZ!KlBh%WCTzGckoDKy9_ly y2_t|8x6H54-M(0#éìDwGQm-Ä`p r oêZjë+ fáaêá}w}ã	aZLì]SS-yfá!éÖ_y'#åk$(5^xa:Le7qd/úauÉc	Aà-ì)"íöwn@Ln/CRïvt9!<á !<:)ïS88ì<Dfì2nj`aewÉä0og6Ö04í@B3äìî(eùh .]CKM;X7:"<bj~w.; úëöpz{<2Eh"êÄwô	d`ó\6óÑ3:yoX5wxdn:Cu,É$2ãB5"52g\[92GjxA5â,ë(B iKHLER/>8àU/ig4B81`àã4L<ïéè7ê-ãcu/jj*àÉk`*yv8à7VE{JÉ$!|('[BRócrq$JK1)g8A%%d%Fõ*W'õ:)àÑ}ÇeåI77o4.$Mì"3Ä4\?2a'lDb-=Ç.idä<$ é'=9v!É$Hjr(0õèé'}vbç q/á.Å=&vî 4>bèQMt'r"vW\<;\;~í3ç%USDY]x@D#n*Äåçg_)`iAY_'=grà	eBiF<k?yyQ\'t(|"qèõt<p:-V
+bash-4.1$ ./symetric_encrypt 561467 out.enc out.txt
+encryption/decription successful
+bash-4.1$ diff symetric_encrypt.c out.txt 
+bash-4.1$ exit
+
+Script done on Sat 03 Oct 2015 04:20:03 PM EDT

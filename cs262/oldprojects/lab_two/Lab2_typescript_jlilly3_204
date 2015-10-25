@@ -1,0 +1,97 @@
+Script started on Tue 08 Sep 2015 02:03:26 PM EDT
+bash-4.1$ uname -0a[K[Ka
+Linux zeus-0 2.6.32-573.3.1.el6.centos.plus.x86_64 #1 SMP Fri Aug 14 01:00:05 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+bash-4.1$ ls
+'  \  Lab2_jlilly3_204	Lab2_jlilly3_204.c  Lab2_typescript_jlilly3_204  Makefile
+bash-4.1$ cat Lab2_jlilly3_204.c 
+// Joshua Lilly G00561467
+// // CS 262, Lab Section 204
+// // Lab 2
+
+#include <stdio.h>
+
+int main()
+{
+    double checktotal = 0.0;
+    int tipamount = 0;
+
+    printf("Enter the price of your bill\n");
+    scanf("%lf", &checktotal);
+    printf("Enter the tip amout you would like to leave\n");
+    scanf("%d", &tipamount);
+    double tipdollar = (( (double) tipamount) / 100) * checktotal; 
+    double checkfinaltotal = checktotal + tipdollar;
+    printf("Your meal cost: %.2lf\n"
+           "Your tip percentage: %d\n"
+           "Total tip amount %.2lf\n"
+           "Your total cost: %.2lf\n", 
+            checktotal, 
+            tipamount, 
+            tipdollar, 
+            checkfinaltotal);
+    return 0;
+}
+bash-4.1$ cat Makefile 
+CFLAGS=-Wall -g
+
+clean:
+	rm -f Lab2_jlilly3_204
+bash-4.1$ rm Lab2_jlilly3_204
+bash-4.1$ make Lab2_jlilly3_204.c 
+make: Nothing to be done for `Lab2_jlilly3_204.c'.
+bash-4.1$ make Lab2_jlilly3_204.c [K[K[K
+cc -Wall -g    Lab2_jlilly3_204.c   -o Lab2_jlilly3_204
+bash-4.1$ ls
+'  \  Lab2_jlilly3_204	Lab2_jlilly3_204.c  Lab2_typescript_jlilly3_204  Makefile
+bash-4.1$ ./Lab2_jlilly3_204 
+Enter the price of your bill
+23.5
+Enter the tip amout you would like to leave
+10
+Your meal cost: 23.50
+Your tip percentage: 10
+Total tip amount 2.35
+Your total cost: 25.85
+bash-4.1$ ./Lab2_jlilly3_204 
+Enter the price of your bill
+23.5
+Enter the tip amout you would like to leave
+0
+Your meal cost: 23.50
+Your tip percentage: 0
+Total tip amount 0.00
+Your total cost: 23.50
+bash-4.1$ ./Lab2_jlilly3_204 
+Enter the price of your bill
+-47.23
+Enter the tip amout you would like to leave
+15
+Your meal cost: -47.23
+Your tip percentage: 15
+Total tip amount -7.08
+Your total cost: -54.31
+bash-4.1$ ./Lab2_jlilly3_204 
+Enter the price of your bill
+0
+Enter the tip amout you would like to leave
+20
+Your meal cost: 0.00
+Your tip percentage: 20
+Total tip amount 0.00
+Your total cost: 0.00
+bash-4.1$ ./[K[K./Lab2_jlilly3_204 
+Enter the price of your bill
+78.63
+Enter the tip amout you would like to leave
+17
+Your meal cost: 78.63
+Your tip percentage: 17
+Total tip amount 13.37
+Your total cost: 92.00
+bash-4.1$ make clearn[K[Kn
+rm -f Lab2_jlilly3_204
+bash-4.1$ ls
+'  \  Lab2_jlilly3_204.c  Lab2_typescript_jlilly3_204  Makefile
+bash-4.1$ exit
+
+Script done on Tue 08 Sep 2015 02:06:42 PM EDT

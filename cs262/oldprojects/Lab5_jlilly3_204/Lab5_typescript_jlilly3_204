@@ -1,0 +1,94 @@
+Script started on Tue 29 Sep 2015 02:14:19 PM EDT
+[?1034hbash-4.1$ uname -a
+Linux zeus-1 2.6.32-573.3.1.el6.centos.plus.x86_64 #1 SMP Fri Aug 14 01:00:05 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+bash-4.1$ ls
+Lab5_jlilly3_204    Lab5_typescript_jlilly3_204  MakeNDEBUG
+Lab5_jlilly3_204.c  Makefile
+bash-4.1$ make
+gcc -o Lab5_jlilly3_204 Lab5_jlilly3_204.c -Wall -g
+bash-4.1$ ./Lab5_jlilly3_204 Lab5_jlilly3_204.c lab5/[K,[K.txt
+// Joshua Lilly, G00561467
+// Lab section, 204
+// September 29, 2015
+
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef enum boolean 
+{
+    FALSE,
+    TRUE
+}bool;
+
+bool copy (const char* infile, const char* outfile);
+
+bool copy (const char* infile, const char* outfile)
+{
+    FILE* in;
+    FILE* out;
+    char buffer[100];
+
+    in = fopen(infile, "r");
+    assert (in != NULL);
+    if (!in)
+    {
+        return FALSE;
+    }
+
+    out = fopen(outfile, "w");
+    assert (out != NULL);
+    if (!out)
+    {
+        return FALSE;
+    }
+
+    while(1)
+    {
+       if (fgets (buffer, 100, in) == NULL) break;
+       fputs (buffer, out);
+
+#ifndef NDEBUG
+       printf ("%s", buffer);
+#endif
+
+    }
+    fclose (in);
+    fclose (out);
+    return TRUE;
+}
+
+int main (int argc, char** argv)
+{
+    // Make sure we have the correct number of arguments
+    if (argc != 3 )
+        exit(1);
+
+    bool success = copy (argv[1], argv[2]);
+
+    if (success)
+    {
+        return 0;
+    }
+    printf ("Failed to copy file due to an error \n");
+    return 1;
+}
+bash-4.1$ dif [Kf Lab5_jh[Klilly3_204.c L\[K[Klab5.txt 
+bash-4.1$ ./Lab5_jlilly3_204 nonexistantfile.txt output.txt
+Lab5_jlilly3_204: Lab5_jlilly3_204.c:24: copy: Assertion `in != ((void *)0)' failed.
+Aborted (core dumped)
+bash-4.1$ make clean
+rm -f Lab5_jlilly3_204
+bash-4.1$ make -f MakeNDEBUG
+gcc -o Lab5_jlilly3_204 Lab5_jlilly3_204.c -Wall -g -DNDEBUG
+bash-4.1$ ./Lab5_jlilly3_204 Lab5_jlilly3_204.c lab5.txt
+bash-4.1$ diff Lab5_jlilly3_204.c lab5.txt 
+bash-4.1$ ./Lab5_jlilly3_204 nonexistantfile.txt out.txt
+Failed to copy file due to an error 
+bash-4.1$ ls
+Lab5_jlilly3_204    lab5.txt			 Makefile
+Lab5_jlilly3_204.c  Lab5_typescript_jlilly3_204  MakeNDEBUG
+bash-4.1$ rm ll[Kab5.txt Lab5_jlilly3_204
+bash-4.1$ exit
+
+Script done on Tue 29 Sep 2015 02:17:38 PM EDT

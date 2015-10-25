@@ -1,0 +1,233 @@
+Script started on Thu 17 Sep 2015 01:49:42 PM EDT
+[?1034hbash-4.1$ uname -a
+Linux zeus-1 2.6.32-573.3.1.el6.centos.plus.x86_64 #1 SMP Fri Aug 14 01:00:05 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+bash-4.1$ lks[K[Ks
+Lab3_jlilly3_204.c  Lab3_typescript_jlilly3_204  Makefile  sample_input.txt
+bash-4.1$ cat Lab3_jlilly3_204.c 
+// Joshua Lilly G00561467
+// CS 262, Lab Section 204
+// Lab 3
+
+#include <stdio.h>
+
+void print_menu();
+char enter_char();
+int enter_triangle_size();
+void print_right(char, int);
+void print_left(char, int);
+
+/*!
+ *  This function will print the main user menu  
+ */
+void print_menu()
+{
+    printf("Change character enter C or c\n");
+    printf("Change number enter N or n\n");
+    printf("Print triangle type 1 (Left Justified) enter 1\n");
+    printf("Print triangle type 2 (Right justified) enter2\n");
+    printf("Quit program Q or q\n");
+    printf("->\n");
+}
+
+/*!
+ *  This function gets a character from the user
+ */
+char enter_char()
+{
+    char character;
+    printf("Enter a single character\n");
+    scanf(" %c", &character); 
+    return character;      
+}
+
+/*!
+ *  This function sets the triangle size and ensures the value is in the bounds.
+ */
+int enter_triangle_size()
+{
+    int tri_size = 0;
+    while( tri_size <= 0 || tri_size > 15)
+    {
+        printf("Enter the size of the triangle to print (1 - 15)\n");
+        scanf("%d", &tri_size);
+    }
+    return tri_size;
+}
+
+/*!
+ *  This function prints a right aligned triangle
+ */
+void print_right(char c, int size)
+{
+    int i, j;
+    for(i = 1; i <= size; ++i)
+    {
+        for(j = size; j > 0; --j)
+        {
+            if (j > i)
+            {
+                printf(" ");
+            }
+            else
+            {
+                printf("%c", c);
+            }
+        }
+        printf("\n");
+    }
+}
+
+/*!
+ *  This function prints a left aligned triangle.
+ */
+void print_left(char c, int size)
+{
+    int i, j;
+    for(i = 0; i < size; ++i)
+    {
+        for(j = 0; j < size; ++j)
+        {
+            if (j <= i)
+            {
+                printf("%c", c);
+            }
+        }
+        printf("\n");
+    }
+
+}
+
+int main()
+{
+    char option = ' ';
+    char C = ' ';
+    short control = 1;
+    int N = 0;
+
+    while(control)
+    {
+        print_menu();
+        scanf(" %c", &option);
+        switch (option)
+        {
+            case 'c':
+            case 'C':
+                C = enter_char();
+                break;
+            
+            case 'q':
+            case 'Q':
+                control = 0;
+                break;
+
+            case 'n':
+            case 'N':
+                N = enter_triangle_size();
+                break;
+
+            case '1':
+                print_left(C, N);
+                break;
+
+            case '2':
+               print_right(C, N); 
+               break;
+
+            default:
+                printf("Invalid operation");
+        }
+    } 
+    return 0;
+}
+bash-4.1$ make
+gcc -o Lab3_jlilly3_204 Lab3_jlilly3_204.c -Wall -g
+bash-4.1$ ls
+Lab3_jlilly3_204  Lab3_jlilly3_204.c  Lab3_typescript_jlilly3_204  Makefile  sample_input.txt
+bash-4.1$ ./Lab3_jlilly3_204 < sample_input.txt 
+Change character enter C or c
+Change number enter N or n
+Print triangle type 1 (Left Justified) enter 1
+Print triangle type 2 (Right justified) enter2
+Quit program Q or q
+->
+Change character enter C or c
+Change number enter N or n
+Print triangle type 1 (Left Justified) enter 1
+Print triangle type 2 (Right justified) enter2
+Quit program Q or q
+->
+Change character enter C or c
+Change number enter N or n
+Print triangle type 1 (Left Justified) enter 1
+Print triangle type 2 (Right justified) enter2
+Quit program Q or q
+->
+Enter a single character
+Change character enter C or c
+Change number enter N or n
+Print triangle type 1 (Left Justified) enter 1
+Print triangle type 2 (Right justified) enter2
+Quit program Q or q
+->
+Change character enter C or c
+Change number enter N or n
+Print triangle type 1 (Left Justified) enter 1
+Print triangle type 2 (Right justified) enter2
+Quit program Q or q
+->
+Change character enter C or c
+Change number enter N or n
+Print triangle type 1 (Left Justified) enter 1
+Print triangle type 2 (Right justified) enter2
+Quit program Q or q
+->
+Enter the size of the triangle to print (1 - 15)
+Enter the size of the triangle to print (1 - 15)
+Enter the size of the triangle to print (1 - 15)
+Change character enter C or c
+Change number enter N or n
+Print triangle type 1 (Left Justified) enter 1
+Print triangle type 2 (Right justified) enter2
+Quit program Q or q
+->
+o
+oo
+ooo
+oooo
+ooooo
+oooooo
+ooooooo
+oooooooo
+ooooooooo
+Change character enter C or c
+Change number enter N or n
+Print triangle type 1 (Left Justified) enter 1
+Print triangle type 2 (Right justified) enter2
+Quit program Q or q
+->
+        o
+       oo
+      ooo
+     oooo
+    ooooo
+   oooooo
+  ooooooo
+ oooooooo
+ooooooooo
+Change character enter C or c
+Change number enter N or n
+Print triangle type 1 (Left Justified) enter 1
+Print triangle type 2 (Right justified) enter2
+Quit program Q or q
+->
+Invalid operationChange character enter C or c
+Change number enter N or n
+Print triangle type 1 (Left Justified) enter 1
+Print triangle type 2 (Right justified) enter2
+Quit program Q or q
+->
+bash-4.1$ make clean
+rm -f Lab3_jlilly3_204
+bash-4.1$ exit
+
+Script done on Thu 17 Sep 2015 01:52:16 PM EDT
