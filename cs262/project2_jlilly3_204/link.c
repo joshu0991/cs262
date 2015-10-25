@@ -63,3 +63,48 @@ int insert_tail(ListNode* p_head, int p_number)
     curr->next = new_node;
     return 0; 
 }
+
+ListNode* find_previous(ListNode* p_head, int number)
+{
+    ListNode* curr;
+    curr = p_head;
+    while (curr->next != NULL)
+    {
+        if ((curr->next)->num == number)
+            return curr;
+        curr = curr->next;
+    }
+    return NULL;
+}
+
+void delete_node(ListNode* p_head, int p_target)
+{
+    ListNode* previous = find_previous(p_head, p_target);
+
+    // The standard unix approach is to ignore user stupidity.
+    if (previous == NULL)
+    {
+        return;
+    }
+    
+    ListNode* target = previous->next;
+    ListNode* after_target = target->next;
+
+    previous->next = after_target;
+
+    free(target);
+}
+
+void delete_entire_list(ListNode* p_head)
+{
+
+    ListNode* curr;
+    curr = p_head;
+    while (curr != NULL)
+    {
+        ListNode* temp;
+        temp = curr;
+        curr = curr->next;
+        free(temp);
+    }
+}
