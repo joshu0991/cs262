@@ -79,14 +79,16 @@ void add_location(struct location** p_location_array, int* p_array_size, int* p_
 void print (struct location* p_array, int p_current_size)
 {
     int i;
-    printf("|%-35s | %-85s | %s   |   %s\n", "Location name:", "Description:", "Latitude:", "Longitude:"); 
+    printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("| %-35s | %-85s |%s    |  %s|\n", "Location name:", "Description:", "Latitude:", "Longitude:"); 
     for (i = 0; i < p_current_size; i++)
     {
         struct location current = p_array[i];
         chop (current.loc_name);
         chop (current.description);
-        printf("|%-35s | %-85s | %f    |    %f\n", current.loc_name, current.description, current.latitude, current.longitude);
+        printf("| %-35s | %-85s |  %10.4f | %10.4f |\n", current.loc_name, current.description, current.latitude, current.longitude);
     } 
+    printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 }
 
 void chop (char* p_chop)
