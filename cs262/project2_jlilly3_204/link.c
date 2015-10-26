@@ -108,9 +108,10 @@ void delete_entire_list(ListNode* p_head)
     {
         ListNode* temp;
         temp = curr;
-        curr = curr->next;
-        free(temp->c_rep);
+        if (curr != p_head)
+            free(temp->c_rep);
         free(temp);
+        curr = curr->next;
     }
 }
 
