@@ -1,0 +1,144 @@
+Script started on Tue 27 Oct 2015 03:33:43 PM EDT
+[?1034hbash-4.1$ uname -a
+Linux zeus-1 2.6.32-573.7.1.el6.centos.plus.x86_64 #1 SMP Wed Sep 23 03:02:55 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+bash-4.1$ pwd
+/home/jlilly3/cs262/Lab9_jlilly3_204
+bash-4.1$ ls
+Lab9_jlilly3_204.c  Lab9_jlilly3_204.txt  Makefile
+bash-4.1$ make
+gcc -o Lab9_jlilly3_204 Lab9_jlilly3_204.c -Wall -g -O0
+bash-4.1$ ./Lab9_jlilly3_204 262262 50 1000
+The new random number is: 205
+The new random number is: 854
+The new random number is: 665
+The new random number is: 473
+The new random number is: 582
+The new random number is: 380
+The new random number is: 343
+The new random number is: 361
+The new random number is: 179
+The new random number is: 171
+The new random number is: 162
+The new random number is: 261
+The new random number is: 17
+The new random number is: 487
+The new random number is: 307
+The new random number is: 107
+The new random number is: 175
+The new random number is: 145
+The new random number is: 124
+The new random number is: 222
+The new random number is: 679
+The new random number is: 118
+The new random number is: 72
+The new random number is: 162
+The new random number is: 20
+The new random number is: 434
+The new random number is: 484
+The new random number is: 911
+The new random number is: 121
+The new random number is: 863
+The new random number is: 702
+The new random number is: 325
+The new random number is: 68
+The new random number is: 366
+The new random number is: 150
+The new random number is: 650
+The new random number is: 745
+The new random number is: 492
+The new random number is: 362
+The new random number is: 276
+The new random number is: 14
+The new random number is: 523
+The new random number is: 888
+The new random number is: 30
+The new random number is: 9
+The new random number is: 195
+The new random number is: 489
+The new random number is: 183
+The new random number is: 339
+The new random number is: 964
+The list printed out in order (top left smallest bottom right biggest)is: 
+         9         14         17         20         30         68         72        107 
+       118        121        124        145        150        162        162        171 
+       175        179        183        195        205        222        261        276 
+       307        325        339        343        361        362        366        380 
+       434        473        484        487        489        492        523        582 
+       650        665        679        702        745        854        863        888 
+       911        964 
+bash-4.1$ valgrind ./Lab9_jlilly3_204 262262 50 1000[1@v[1@a[1@l[1@g[1@r[1@i[1@n[1@d[1@ [1@-[1@-[1@l[1@e[1@a[1@d[1P[1@k[1@-[1@c[1@h[1@e[1@c[1@k[1@=[1@y[1@e[1@s[1@ 
+==28404== Memcheck, a memory error detector
+==28404== Copyright (C) 2002-2012, and GNU GPL'd, by Julian Seward et al.
+==28404== Using Valgrind-3.8.1 and LibVEX; rerun with -h for copyright info
+==28404== Command: ./Lab9_jlilly3_204 262262 50 1000
+==28404== 
+The new random number is: 205
+The new random number is: 854
+The new random number is: 665
+The new random number is: 473
+The new random number is: 582
+The new random number is: 380
+The new random number is: 343
+The new random number is: 361
+The new random number is: 179
+The new random number is: 171
+The new random number is: 162
+The new random number is: 261
+The new random number is: 17
+The new random number is: 487
+The new random number is: 307
+The new random number is: 107
+The new random number is: 175
+The new random number is: 145
+The new random number is: 124
+The new random number is: 222
+The new random number is: 679
+The new random number is: 118
+The new random number is: 72
+The new random number is: 162
+The new random number is: 20
+The new random number is: 434
+The new random number is: 484
+The new random number is: 911
+The new random number is: 121
+The new random number is: 863
+The new random number is: 702
+The new random number is: 325
+The new random number is: 68
+The new random number is: 366
+The new random number is: 150
+The new random number is: 650
+The new random number is: 745
+The new random number is: 492
+The new random number is: 362
+The new random number is: 276
+The new random number is: 14
+The new random number is: 523
+The new random number is: 888
+The new random number is: 30
+The new random number is: 9
+The new random number is: 195
+The new random number is: 489
+The new random number is: 183
+The new random number is: 339
+The new random number is: 964
+The list printed out in order (top left smallest bottom right biggest)is: 
+         9         14         17         20         30         68         72        107 
+       118        121        124        145        150        162        162        171 
+       175        179        183        195        205        222        261        276 
+       307        325        339        343        361        362        366        380 
+       434        473        484        487        489        492        523        582 
+       650        665        679        702        745        854        863        888 
+       911        964 
+==28404== 
+==28404== HEAP SUMMARY:
+==28404==     in use at exit: 0 bytes in 0 blocks
+==28404==   total heap usage: 51 allocs, 51 frees, 816 bytes allocated
+==28404== 
+==28404== All heap blocks were freed -- no leaks are possible
+==28404== 
+==28404== For counts of detected and suppressed errors, rerun with: -v
+==28404== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 6 from 6)
+bash-4.1$ exit
+
+Script done on Tue 27 Oct 2015 03:34:53 PM EDT
