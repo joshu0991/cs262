@@ -44,27 +44,13 @@ int insert(ListNode* p_prev, int p_number, int* p_c_rep)
     return 0;
 }
 
-int insert_tail(ListNode* p_head, int p_number, int* p_c_rep)
+int insert_tail(ListNode* p_tail, ListNode* p_to_insert)
 {
-    ListNode *curr, *new_node;
-    
-    // Set up new node
-    new_node = (ListNode*)malloc(sizeof(ListNode));
-    if (!new_node)
-        return 1;
-    new_node->num = p_number;
-    new_node->c_rep = p_c_rep;
-
-    // This node will be the new end
-    new_node->next = NULL;
-
-    // Find the end
-    curr = p_head;
-    while (curr->next != NULL)
-    {
-        curr = curr->next;
-    }
-    curr->next = new_node;
+    ListNode* curr;    
+    curr = p_tail->next;
+    curr->next = p_to_insert;
+    p_to_insert->next = NULL;
+    p_tail->next = p_to_insert;
     return 0; 
 }
 
@@ -81,22 +67,21 @@ ListNode* find_previous(ListNode* p_head, int number)
     return NULL;
 }
 
-void delete_node(ListNode* p_head, int p_target)
+ListNode* delete_node(ListNode* p_head, int p_target)
 {
     ListNode* previous = find_previous(p_head, p_target);
 
     // The standard unix approach is to ignore user stupidity.
     if (previous == NULL)
     {
-        return;
+        return NULL;
     }
     
     ListNode* target = previous->next;
     ListNode* after_target = target->next;
 
     previous->next = after_target;
-    free(target->c_rep);
-    free(target);
+    return target;
 }
 
 void delete_entire_list(ListNode* p_head)
@@ -145,4 +130,13 @@ int* getCharRep(int p_num, int p_size)
     }
 
     return value;
+}
+
+// remove a node from the src head and put it on the dest tail
+void move(ListNode* p_dest_tail, ListNode* p_src_head, int value)
+{
+    ListNode* n;
+    n = delete_node(p_src_head, value);
+    if (n)
+        insert_tail(p_dest_tail, n); 
 }

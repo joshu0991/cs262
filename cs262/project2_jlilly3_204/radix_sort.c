@@ -1,8 +1,13 @@
 #include "link.h"
 
+void radix_sort(ListNode** p_head_pointers, ListNode** p_tail_pointers, ListNode* p_main_head)
+{
+
+}
+
 int main(int argc, char** argv)
 {
-    ListNode** head_pointers;
+    ListNode **head_pointers, **tail_pointers;
     ListNode* main_head;
     main_head = newList();
 
@@ -12,10 +17,12 @@ int main(int argc, char** argv)
 
     // Init the list and the head pointers
     head_pointers = malloc(10 * sizeof(ListNode));
+    tail_pointers = malloc(10 * sizeof(ListNode));
     int i;
     for (i = 0; i < 10; i++)
     {
         head_pointers[i] = newList();
+        tail_pointers[i] = newList();
     }
 
 
@@ -39,7 +46,7 @@ int main(int argc, char** argv)
     for (m = 0; m < N; m++)
     {
         int num = (rand() % (max+1-min))+min;
-        int* c_rep = getCharRep(num, total_size);
+        int* c_rep = getCharRep(num, total_size - 1);
         insert(main_head, num, c_rep);        
     }
     printList(main_head);
@@ -52,5 +59,6 @@ int main(int argc, char** argv)
     }
 
     free(head_pointers);
+    free(tail_pointers);
     return 0;
 }
