@@ -101,23 +101,22 @@ void delete_node(ListNode** p_head, ListNode**  p_target)
 //! Frees all memory
 void delete_entire_list(ListNode* p_head)
 {
-    ListNode* curr;
+    ListNode* curr, *temp;
     curr = p_head;
     while (curr != NULL)
     {
-        ListNode* temp;
         temp = curr;
-        if (curr != p_head)
+        curr = curr->next;
+        if (temp != p_head)
             free(temp->c_rep);
         free(temp);
-        curr = curr->next;
     }
 }
 
 //! Convert an int to an array
 int* getCharRep(int p_num, int p_size)
 {
-    int* value = malloc((p_size * sizeof(int)));
+    int* value = malloc(((p_size + 1) * sizeof(int)));
     int i;
     for (i = 0; i < p_size; i++)
     {
