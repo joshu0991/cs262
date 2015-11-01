@@ -1,8 +1,9 @@
 //! Joshua Lilly G00561467
 //! Project II Radix Sort Linked Lists.
 //! October 31, 2015
-
 #include "link.h"
+
+#include <assert.h>
 
 /*! 
  * Sort the linked list using radix sort
@@ -39,14 +40,17 @@ void radix_sort(ListNode** p_head_pointers, ListNode** p_tail_pointers, ListNode
     {
         // The curser to move
         curser = (*p_main_head)->next;
+        assert(curser != NULL);
 
         // Sort every number in the list into the appropraite bucket.
         while (curser != NULL)
         {
             // Get the number at the n position
             int position_num = (curser->c_rep)[i];
+
             // Move the given node to the new position
             move(p_tail_pointers, p_head_pointers, p_main_head, &curser, position_num);
+
             // Move the curser
             curser = (*p_main_head)->next;
         }
@@ -54,9 +58,12 @@ void radix_sort(ListNode** p_head_pointers, ListNode** p_tail_pointers, ListNode
         // Stitch together the buckets
         stitch_together(p_head_pointers, p_tail_pointers, p_main_head);       
         printf("The list after %d pass/es is:\n", counter++);
+        assert(*p_main_head != NULL);
         printList(*p_main_head);
         
         // We need to empty the buckets.
+        assert(p_head_pointers != NULL);
+        assert(p_tail_pointers != NULL);
         null_out(p_head_pointers, p_tail_pointers);
     }
 }
@@ -67,6 +74,8 @@ void null_out(ListNode** p_head_pointers, ListNode** p_tail_pointers)
     int i;
     for (i = 0; i < 10; i++)
     {
+        assert(p_head_pointers[i] != NULL);
+        assert(p_tail_pointers[i] != NULL);
         (p_head_pointers[i])->next = NULL;
         (p_tail_pointers[i])->next = NULL;
     }
@@ -113,6 +122,12 @@ int main(int argc, char** argv)
     int min = atoi(argv[3]);
     int max = atoi(argv[4]);
 
+    if (max <= min)
+    {
+        printf("Max size was smaller than min size.\n");
+        return 1;
+    }
+
     // This will give the max size
     int temp = atoi(argv[4]);
     while (temp)
@@ -130,8 +145,15 @@ int main(int argc, char** argv)
     {
         int num = (rand() % (max+1-min))+min;
         int* c_rep = getCharRep(num, total_size - 1);
+        assert(main_head != NULL);
+        assert(c_rep != NULL);
         insert(main_head, num, c_rep);        
     }
+    assert(head_pointers != NULL);
+    assert(tail_pointers != NULL);
+    assert(main_head != NULL);
+    assert(total_size != 0);
+
     // Sort the list by radix
     radix_sort(head_pointers, tail_pointers, &main_head, total_size);
     printf("The final sorted list is:\n");
