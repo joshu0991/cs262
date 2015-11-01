@@ -33,7 +33,7 @@ void null_out(ListNode** p_head_pointers, ListNode** p_tail_pointers);
 //! Sort all of the given integers by the radix.
 void radix_sort(ListNode** p_head_pointers, ListNode** p_tail_pointers, ListNode** p_main_head, int p_size)
 {
-    int i, counter = 1;
+    int i, counter = 0;
     ListNode* curser;
     // This is the main loop responsible for accessing the appropriate positions of the number ie ones tens etc.
     for (i = p_size - 1; i > 0; i--)
@@ -54,13 +54,24 @@ void radix_sort(ListNode** p_head_pointers, ListNode** p_tail_pointers, ListNode
             // Move the curser
             curser = (*p_main_head)->next;
         }
-        
+        printf("The buckets after %d pass/es are:\n", ++counter);
+
+        // Print out the buckets after grouping per requirement
+        int j;
+        for (j = 0; j < 10; j++)
+        {
+           printf("The %ds bucket:\n", j);
+           printList(p_head_pointers[j]);
+           printf("---------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        }
+ 
         // Stitch together the buckets
         stitch_together(p_head_pointers, p_tail_pointers, p_main_head);       
-        printf("The list after %d pass/es is:\n", counter++);
+        printf("The list after %d pass/es is:\n", counter);
         assert(*p_main_head != NULL);
-        printList(*p_main_head);
-        
+        printList(*p_main_head); 
+        printf("---------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
         // We need to empty the buckets.
         assert(p_head_pointers != NULL);
         assert(p_tail_pointers != NULL);
@@ -158,6 +169,7 @@ int main(int argc, char** argv)
     radix_sort(head_pointers, tail_pointers, &main_head, total_size);
     printf("The final sorted list is:\n");
     printList(main_head);
+    printf("---------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
     // Clean up.
     delete_entire_list(main_head);
