@@ -44,44 +44,44 @@ int insert(ListNode* p_prev, int p_number, int* p_c_rep)
     return 0;
 }
 
-int insert_tail(ListNode* p_tail, ListNode* p_to_insert)
+int insert_tail(ListNode* p_tail, ListNode** p_to_insert)
 {
     ListNode* curr;    
     curr = p_tail->next;
-    curr->next = p_to_insert;
-    p_to_insert->next = NULL;
-    p_tail->next = p_to_insert;
+    if (curr)
+        curr->next = *p_to_insert;
+    
+    (*p_to_insert)->next = NULL;
+    p_tail->next = *p_to_insert;
     return 0; 
 }
 
-ListNode* find_previous(ListNode* p_head, int number)
+ListNode* find_previous(ListNode** p_head, ListNode** p_target)
 {
     ListNode* curr;
-    curr = p_head;
+    curr = *p_head;
     while (curr->next != NULL)
     {
-        if ((curr->next)->num == number)
+        if ((curr->next) == *p_target)
             return curr;
         curr = curr->next;
     }
     return NULL;
 }
 
-ListNode* delete_node(ListNode* p_head, int p_target)
+void delete_node(ListNode** p_head, ListNode**  p_target)
 {
+    if (!p_head)
+        return;
+
     ListNode* previous = find_previous(p_head, p_target);
 
-    // The standard unix approach is to ignore user stupidity.
-    if (previous == NULL)
-    {
-        return NULL;
-    }
-    
-    ListNode* target = previous->next;
-    ListNode* after_target = target->next;
+    if (!previous)
+        return;
+ 
+    ListNode* after_target = (*p_target)->next;
 
     previous->next = after_target;
-    return target;
 }
 
 void delete_entire_list(ListNode* p_head)
@@ -132,11 +132,34 @@ int* getCharRep(int p_num, int p_size)
     return value;
 }
 
-// remove a node from the src head and put it on the dest tail
-void move(ListNode* p_dest_tail, ListNode* p_src_head, int value)
+ListNode* find_end(ListNode** p_head)
 {
-    ListNode* n;
-    n = delete_node(p_src_head, value);
-    if (n)
-        insert_tail(p_dest_tail, n); 
+    ListNode *curr, *prev;
+    curr = *p_head;
+    while (curr != NULL)
+    {
+        prev = curr;
+        curr = curr->next;
+    }
+    return prev;
+}
+
+// remove a node from the src head and put it on the dest tail
+void move(ListNode** p_dest_tail, ListNode** p_dest_head, ListNode** p_src_head, ListNode** p_move, int p_pos)
+{
+    printf("The list at %d\n", p_pos);
+    printList(p_dest_head[p_pos]);
+    printf("The list\n");
+    delete_node(p_src_head, p_move);
+    printList(*p_src_head);
+    if ((p_dest_head[p_pos])->next == NULL)
+    {
+        p_dest_head[p_pos]->next = *p_move;
+        p_dest_tail[p_pos]->next = *p_move;
+        (*p_move)->next = NULL;
+    }
+    else
+    {          
+        insert_tail(p_dest_tail[p_pos], p_move); 
+    }
 }

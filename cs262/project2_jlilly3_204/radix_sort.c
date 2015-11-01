@@ -1,8 +1,46 @@
 #include "link.h"
 
-void radix_sort(ListNode** p_head_pointers, ListNode** p_tail_pointers, ListNode* p_main_head)
-{
+void radix_sort(ListNode** p_head_pointers, ListNode** p_tail_pointers, ListNode* p_main_head, int p_size);
+void stitch_together(ListNode** p_heads, ListNode** p_tails, ListNode** p_main_head);
 
+void radix_sort(ListNode** p_head_pointers, ListNode** p_tail_pointers, ListNode* p_main_head, int p_size)
+{
+    int i;
+    ListNode* curser;
+    curser = p_main_head->next;
+    // This is the main loop responsible for accessing the appropriate positions of the number ie ones tens etc.
+    for (i = p_size - 1; i >= 0; i--)
+    {
+        // Sort every number in the list into the appropraite bucket.
+            printList(p_main_head);
+        while (curser != NULL)
+        {
+            int position_num = (curser->c_rep)[i];
+            move(p_tail_pointers, p_head_pointers, &p_main_head, &curser, position_num);
+            curser = p_main_head->next;
+            printList(p_head_pointers[0]);
+        }
+        // Stitch together the buckets
+        stitch_together(p_head_pointers, p_tail_pointers, &p_main_head);       
+        printList(p_main_head);
+    }
+}
+
+void stitch_together(ListNode** p_heads, ListNode** p_tails, ListNode** p_main_head)
+{
+    int i;
+    (*p_main_head)->next = (p_heads[0])->next;
+    //printList(p_main_head);
+    for (i = 1; i < 10; i++)
+    {   
+    printf("heads at i\n");
+    printList(p_heads[i]);    
+        ListNode* n = find_end(p_main_head);
+        n->next = (p_heads[i])->next;
+    }
+    ListNode* n = find_end(p_main_head);
+    n->next = NULL;
+    printList(*p_main_head);    
 }
 
 int main(int argc, char** argv)
@@ -50,6 +88,8 @@ int main(int argc, char** argv)
         insert(main_head, num, c_rep);        
     }
     printList(main_head);
+    radix_sort(head_pointers, tail_pointers, main_head, total_size);
+ //   printList(main_head);
 
     // Clean up all of the head nodes.
     int j;
