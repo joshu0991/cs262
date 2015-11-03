@@ -1,0 +1,67 @@
+Debugging Lab #3
+More gdb Techniques and Debugging Code that uses Pointers
+
+Answer Sheet 
+
+Name Joshua Lilly G00561467 Lab Section 204
+
+Setting a Conditional Breakpoint
+A little farther down in the help text, you will see:
+CONDITION is ___a boolean expression. (fill in the rest of the line).
+
+For what value of N does the output value start to give incorrect output? 16
+
+Based on what you have learned so far, write the full gdb command to set a conditional breakpoint at the proper source code line. b Lab10.c:91 if (i == 16)_
+
+This time, have the breakpoint stop when num is equal to 120. Write the command to set the breakpoint: _b Lab10.c:94 if num ==120
+
+Set the breakpoint in gdb and continue running the code using the continue command. Write the last line output before the (gdb) prompt returns: 94    num += j;
+
+Use the gdb command to display the num, i and j variables.  Write all of their values:   num = 120 'x'    i = 16    j = 16
+
+Assuming there is no bug, what will the value of num be after executing the statement num += j?    num = 136
+Execute a step command in gdb.  What is the actual value of num now?  num = -120 '\210'
+Why is the value what it is?  We're using a char which is a single byte of data so the char is overflowing which causes wrap around.
+
+Do you get the proper output now? Yes!
+
+Finding the Seg Fault
+Notice that gdb tells you exactly the line of code where the seg fault occurs. What line is it? Lab10.c:111_
+
+Print the variable dl3 using the print command. Write the values of i and c: i = 37 c = 65
+
+Now print the value of dl2 using the following command:
+(gdb) print dl2
+What is its value? (debugLab *) 0x601010
+
+Note that dl2 is a pointer, so a memory address is printed. To see the contents of the memory pointed to by that address, use the following command:
+(gdb) print *dl2
+What are the values of i and c? i = 36 c = 66
+
+Now, let's look at the actual line of code causing the seg fault. Using gdb, print the value of dl1 using the following command:
+(gdb) print dl1
+What is its value? ___(debugLab *) 0x0_
+
+Note that dl1 is a pointer. Now, try to dereference dl1 and print its value using the following command:
+(gdb) print *dl1
+Write the message given: __Cannot access memory at address 0x0
+
+Now its Your Turn
+Exit gdb and try running the Lab10 executable using 4 as the command line parameter:
+bash$ ./Lab10 4
+What happens? Segmentation fault (core dumped)
+
+Now, use the techniques you have learned to find the error in the code using gdb.
+
+What line does the segmentation fault occur?  Lab10.c:122_
+
+What is the value of i at the point of segmentation fault? 1192 
+
+Once you find the source of the problem, copy the line of code that causes the problem below:
+
+   for (i=0;1<n;i++)
+
+Fix the code, recompile and run the executable. Write the output of the correctly running executable below:
+
+The sum of the values in the array "arr" is: 78
+
