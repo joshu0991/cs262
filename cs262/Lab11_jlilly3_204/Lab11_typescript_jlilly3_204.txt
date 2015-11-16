@@ -1,0 +1,615 @@
+Script started on Sun 15 Nov 2015 07:49:34 PM EST
+[?1034hbash-4.1$ uname -a
+Linux zeus-0 2.6.32-573.7.1.el6.centos.plus.x86_64 #1 SMP Wed Sep 23 03:02:55 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+bash-4.1$ ls
+Lab11_jlilly3_204.c  Lab11_jlilly3_204.txt  Makefile
+bash-4.1$ cat *
+#include <stdio.h>
+#include <stdlib.h>
+
+#define BYTETOBINARYPATTERN "%d%d%d%d%d%d%d%d"
+
+#define BYTETOBINARY(byte)  \
+  (byte & 0x80 ? 1 : 0), \
+  (byte & 0x40 ? 1 : 0), \
+  (byte & 0x20 ? 1 : 0), \
+  (byte & 0x10 ? 1 : 0), \
+  (byte & 0x08 ? 1 : 0), \
+  (byte & 0x04 ? 1 : 0), \
+  (byte & 0x02 ? 1 : 0), \
+  (byte & 0x01 ? 1 : 0) 
+
+#define PRINTBIN(x) printf(BYTETOBINARYPATTERN, BYTETOBINARY(x));
+
+void setlsbs(unsigned char *p, unsigned char b0);
+unsigned char getlsbs(unsigned char *p);
+void print_decimal(unsigned char* p);
+void print_bin(unsigned char* p);
+
+//! Set the least significant bit for all values in an array to the coorrisponding bit pos. in b_o
+void setlsbs(unsigned char* p, unsigned char b_0)
+{
+    int i;
+    for (i = 0; i < 8; i++)
+    {
+        int x = b_0 & 1;
+        // If x is one set the low order bit to 1 using or
+        if (x)
+        {
+            p[i] |= x;
+        }
+        // If the value is a 0 and with one's complement to set lo to 0
+        else
+        {
+           p[i] &= ~1; 
+        }
+        // shift our bit to the right to get the next value in the bit
+        b_0 = b_0 >> 1;
+    }
+}
+
+//! Get the least significant bit from each position in an array and add it to a byte
+unsigned char getlsbs(unsigned char *p)
+{
+    int i;
+    unsigned char c = 0;
+    for (i = 0; i < 8; i++)
+    {
+        // find out what the lsb is
+        int x = p[i] & 1;
+        if (x)
+        {
+            // if the lsb was a one insert a one and shift it into position
+            c |= 1 << i;
+        }
+    }
+    return c;
+}
+
+//! Print a given array in decimal 
+void print_decimal(unsigned char* p)
+{
+    int k;
+    for (k = 0; k < 8; k++)
+    {
+        printf("Num at %d: %d\n", k, p[k]);
+    }
+}
+
+//! Print a given array in in bianary representation
+void print_bin(unsigned char* p)
+{
+    int c;
+    for (c = 0; c < 8; c++)
+    {
+        printf("Num at %d ", c);
+        PRINTBIN(p[c]);
+        printf("\n");
+    } 
+}
+
+int main(int argc, char** argv)
+{
+    // error case
+    if (argc != 2)
+        return 1;
+
+    // Seed random
+    int seed = atoi(argv[1]);
+    srand(seed);
+
+    int byte0 = 0;
+    unsigned char p[8];
+    
+    // Populate our array with random numbers
+    int i;
+    for (i = 0; i < 8; i++)
+    {
+        int num = (rand() % 256);
+        p[i] = num;
+    }
+
+    // Can generate from [0 - 255] 
+    byte0 = rand() % 256;
+
+    printf("The initial array in decimal is: \n");
+    print_decimal(p);
+
+    printf("Byte 0 in decimal is: %d\n", byte0);
+
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    
+    printf("The initial array in bianary is: \n");
+    print_bin(p);    
+ 
+    printf("Byte 0 in bianary is: ");
+    PRINTBIN(byte0);
+    printf("\n");
+  
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+    // Call setlsbs
+    setlsbs(p, byte0);
+
+    printf("The modified array in decimal is: \n");
+    print_decimal(p);
+
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+    printf("The modified array in bianary is: \n");
+    print_bin(p);   
+ 
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    
+    // Get back our value
+    unsigned char r = getlsbs(p);
+    printf("The returned value from getlsbs is decimal is: %d\n", r);
+
+    printf("The returned value from getlsbs in bianary is: ");
+    PRINTBIN(r);
+    printf("\n");
+    return 0;
+}
+CFLAGS=-Wall -g -O0
+
+Lab_11_jlilly3_304:
+	gcc -o Lab11_jlilly3_204 Lab11_jlilly3_204.c $(CFLAGS)
+
+clean:
+	rm -f Lab11_jlilly3_204
+bash-4.1$ make
+gcc -o Lab11_jlilly3_204 Lab11_jlilly3_204.c -Wall -g -O0
+bash-4.1$ ./Lab11_jlilly3_204 123
+The initial array in decimal is: 
+Num at 0: 161
+Num at 1: 149
+Num at 2: 113
+Num at 3: 126
+Num at 4: 135
+Num at 5: 251
+Num at 6: 107
+Num at 7: 190
+Byte 0 in decimal is: 170
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The initial array in bianary is: 
+Num at 0 10100001
+Num at 1 10010101
+Num at 2 01110001
+Num at 3 01111110
+Num at 4 10000111
+Num at 5 11111011
+Num at 6 01101011
+Num at 7 10111110
+Byte 0 in bianary is: 10101010
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in decimal is: 
+Num at 0: 160
+Num at 1: 149
+Num at 2: 112
+Num at 3: 127
+Num at 4: 134
+Num at 5: 251
+Num at 6: 106
+Num at 7: 191
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in bianary is: 
+Num at 0 10100000
+Num at 1 10010101
+Num at 2 01110000
+Num at 3 01111111
+Num at 4 10000110
+Num at 5 11111011
+Num at 6 01101010
+Num at 7 10111111
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The returned value from getlsbs is decimal is: 170
+The returned value from getlsbs in bianary is: 10101010
+bash-4.1$ ./Lab11_jlilly3_204 123[K[K[K234
+The initial array in decimal is: 
+Num at 0: 43
+Num at 1: 57
+Num at 2: 153
+Num at 3: 68
+Num at 4: 211
+Num at 5: 33
+Num at 6: 179
+Num at 7: 44
+Byte 0 in decimal is: 226
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The initial array in bianary is: 
+Num at 0 00101011
+Num at 1 00111001
+Num at 2 10011001
+Num at 3 01000100
+Num at 4 11010011
+Num at 5 00100001
+Num at 6 10110011
+Num at 7 00101100
+Byte 0 in bianary is: 11100010
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in decimal is: 
+Num at 0: 42
+Num at 1: 57
+Num at 2: 152
+Num at 3: 68
+Num at 4: 210
+Num at 5: 33
+Num at 6: 179
+Num at 7: 45
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in bianary is: 
+Num at 0 00101010
+Num at 1 00111001
+Num at 2 10011000
+Num at 3 01000100
+Num at 4 11010010
+Num at 5 00100001
+Num at 6 10110011
+Num at 7 00101101
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The returned value from getlsbs is decimal is: 226
+The returned value from getlsbs in bianary is: 11100010
+bash-4.1$ ./Lab11_jlilly3_204 234[C[K[K[K345
+The initial array in decimal is: 
+Num at 0: 105
+Num at 1: 197
+Num at 2: 37
+Num at 3: 56
+Num at 4: 39
+Num at 5: 189
+Num at 6: 137
+Num at 7: 146
+Byte 0 in decimal is: 81
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The initial array in bianary is: 
+Num at 0 01101001
+Num at 1 11000101
+Num at 2 00100101
+Num at 3 00111000
+Num at 4 00100111
+Num at 5 10111101
+Num at 6 10001001
+Num at 7 10010010
+Byte 0 in bianary is: 01010001
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in decimal is: 
+Num at 0: 105
+Num at 1: 196
+Num at 2: 36
+Num at 3: 56
+Num at 4: 39
+Num at 5: 188
+Num at 6: 137
+Num at 7: 146
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in bianary is: 
+Num at 0 01101001
+Num at 1 11000100
+Num at 2 00100100
+Num at 3 00111000
+Num at 4 00100111
+Num at 5 10111100
+Num at 6 10001001
+Num at 7 10010010
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The returned value from getlsbs is decimal is: 81
+The returned value from getlsbs in bianary is: 01010001
+bash-4.1$ ./Lab11_jlilly3_204 345[K[K[K456
+The initial array in decimal is: 
+Num at 0: 207
+Num at 1: 91
+Num at 2: 72
+Num at 3: 105
+Num at 4: 39
+Num at 5: 231
+Num at 6: 125
+Num at 7: 225
+Byte 0 in decimal is: 11
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The initial array in bianary is: 
+Num at 0 11001111
+Num at 1 01011011
+Num at 2 01001000
+Num at 3 01101001
+Num at 4 00100111
+Num at 5 11100111
+Num at 6 01111101
+Num at 7 11100001
+Byte 0 in bianary is: 00001011
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in decimal is: 
+Num at 0: 207
+Num at 1: 91
+Num at 2: 72
+Num at 3: 105
+Num at 4: 38
+Num at 5: 230
+Num at 6: 124
+Num at 7: 224
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in bianary is: 
+Num at 0 11001111
+Num at 1 01011011
+Num at 2 01001000
+Num at 3 01101001
+Num at 4 00100110
+Num at 5 11100110
+Num at 6 01111100
+Num at 7 11100000
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The returned value from getlsbs is decimal is: 11
+The returned value from getlsbs in bianary is: 00001011
+bash-4.1$ ./Lab11_jlilly3_204 456[K[K[K1[K678
+The initial array in decimal is: 
+Num at 0: 239
+Num at 1: 79
+Num at 2: 164
+Num at 3: 156
+Num at 4: 114
+Num at 5: 204
+Num at 6: 61
+Num at 7: 84
+Byte 0 in decimal is: 155
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The initial array in bianary is: 
+Num at 0 11101111
+Num at 1 01001111
+Num at 2 10100100
+Num at 3 10011100
+Num at 4 01110010
+Num at 5 11001100
+Num at 6 00111101
+Num at 7 01010100
+Byte 0 in bianary is: 10011011
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in decimal is: 
+Num at 0: 239
+Num at 1: 79
+Num at 2: 164
+Num at 3: 157
+Num at 4: 115
+Num at 5: 204
+Num at 6: 60
+Num at 7: 85
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in bianary is: 
+Num at 0 11101111
+Num at 1 01001111
+Num at 2 10100100
+Num at 3 10011101
+Num at 4 01110011
+Num at 5 11001100
+Num at 6 00111100
+Num at 7 01010101
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The returned value from getlsbs is decimal is: 155
+The returned value from getlsbs in bianary is: 10011011
+bash-4.1$ ./Lab11_jlilly3_204 678[K[K[K789
+The initial array in decimal is: 
+Num at 0: 105
+Num at 1: 169
+Num at 2: 143
+Num at 3: 14
+Num at 4: 61
+Num at 5: 61
+Num at 6: 213
+Num at 7: 158
+Byte 0 in decimal is: 147
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The initial array in bianary is: 
+Num at 0 01101001
+Num at 1 10101001
+Num at 2 10001111
+Num at 3 00001110
+Num at 4 00111101
+Num at 5 00111101
+Num at 6 11010101
+Num at 7 10011110
+Byte 0 in bianary is: 10010011
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in decimal is: 
+Num at 0: 105
+Num at 1: 169
+Num at 2: 142
+Num at 3: 14
+Num at 4: 61
+Num at 5: 60
+Num at 6: 212
+Num at 7: 159
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in bianary is: 
+Num at 0 01101001
+Num at 1 10101001
+Num at 2 10001110
+Num at 3 00001110
+Num at 4 00111101
+Num at 5 00111100
+Num at 6 11010100
+Num at 7 10011111
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The returned value from getlsbs is decimal is: 147
+The returned value from getlsbs in bianary is: 10010011
+bash-4.1$ 10[K[K./Lab11_jlilly3_204 789 1010
+bash-4.1$ ./Lab11_jlilly3_204 789 1010[1P1010
+The initial array in decimal is: 
+Num at 0: 135
+Num at 1: 140
+Num at 2: 87
+Num at 3: 20
+Num at 4: 209
+Num at 5: 202
+Num at 6: 166
+Num at 7: 20
+Byte 0 in decimal is: 19
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The initial array in bianary is: 
+Num at 0 10000111
+Num at 1 10001100
+Num at 2 01010111
+Num at 3 00010100
+Num at 4 11010001
+Num at 5 11001010
+Num at 6 10100110
+Num at 7 00010100
+Byte 0 in bianary is: 00010011
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in decimal is: 
+Num at 0: 135
+Num at 1: 141
+Num at 2: 86
+Num at 3: 20
+Num at 4: 209
+Num at 5: 202
+Num at 6: 166
+Num at 7: 20
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in bianary is: 
+Num at 0 10000111
+Num at 1 10001101
+Num at 2 01010110
+Num at 3 00010100
+Num at 4 11010001
+Num at 5 11001010
+Num at 6 10100110
+Num at 7 00010100
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The returned value from getlsbs is decimal is: 19
+The returned value from getlsbs in bianary is: 00010011
+bash-4.1$ ./Lab11_jlilly3_204 7891010[K[K[K777
+The initial array in decimal is: 
+Num at 0: 184
+Num at 1: 248
+Num at 2: 67
+Num at 3: 147
+Num at 4: 4
+Num at 5: 149
+Num at 6: 61
+Num at 7: 208
+Byte 0 in decimal is: 249
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The initial array in bianary is: 
+Num at 0 10111000
+Num at 1 11111000
+Num at 2 01000011
+Num at 3 10010011
+Num at 4 00000100
+Num at 5 10010101
+Num at 6 00111101
+Num at 7 11010000
+Byte 0 in bianary is: 11111001
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in decimal is: 
+Num at 0: 185
+Num at 1: 248
+Num at 2: 66
+Num at 3: 147
+Num at 4: 5
+Num at 5: 149
+Num at 6: 61
+Num at 7: 209
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in bianary is: 
+Num at 0 10111001
+Num at 1 11111000
+Num at 2 01000010
+Num at 3 10010011
+Num at 4 00000101
+Num at 5 10010101
+Num at 6 00111101
+Num at 7 11010001
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The returned value from getlsbs is decimal is: 249
+The returned value from getlsbs in bianary is: 11111001
+bash-4.1$ ./Lab11_jlilly3_204 7891777[K=[K[K[K0909
+The initial array in decimal is: 
+Num at 0: 220
+Num at 1: 185
+Num at 2: 160
+Num at 3: 105
+Num at 4: 26
+Num at 5: 123
+Num at 6: 164
+Num at 7: 191
+Byte 0 in decimal is: 237
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The initial array in bianary is: 
+Num at 0 11011100
+Num at 1 10111001
+Num at 2 10100000
+Num at 3 01101001
+Num at 4 00011010
+Num at 5 01111011
+Num at 6 10100100
+Num at 7 10111111
+Byte 0 in bianary is: 11101101
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in decimal is: 
+Num at 0: 221
+Num at 1: 184
+Num at 2: 161
+Num at 3: 105
+Num at 4: 26
+Num at 5: 123
+Num at 6: 165
+Num at 7: 191
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in bianary is: 
+Num at 0 11011101
+Num at 1 10111000
+Num at 2 10100001
+Num at 3 01101001
+Num at 4 00011010
+Num at 5 01111011
+Num at 6 10100101
+Num at 7 10111111
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The returned value from getlsbs is decimal is: 237
+The returned value from getlsbs in bianary is: 11101101
+bash-4.1$ ./Lab11_jlilly3_204 78910909111
+The initial array in decimal is: 
+Num at 0: 189
+Num at 1: 24
+Num at 2: 163
+Num at 3: 83
+Num at 4: 208
+Num at 5: 156
+Num at 6: 183
+Num at 7: 173
+Byte 0 in decimal is: 203
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The initial array in bianary is: 
+Num at 0 10111101
+Num at 1 00011000
+Num at 2 10100011
+Num at 3 01010011
+Num at 4 11010000
+Num at 5 10011100
+Num at 6 10110111
+Num at 7 10101101
+Byte 0 in bianary is: 11001011
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in decimal is: 
+Num at 0: 189
+Num at 1: 25
+Num at 2: 162
+Num at 3: 83
+Num at 4: 208
+Num at 5: 156
+Num at 6: 183
+Num at 7: 173
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The modified array in bianary is: 
+Num at 0 10111101
+Num at 1 00011001
+Num at 2 10100010
+Num at 3 01010011
+Num at 4 11010000
+Num at 5 10011100
+Num at 6 10110111
+Num at 7 10101101
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+The returned value from getlsbs is decimal is: 203
+The returned value from getlsbs in bianary is: 11001011
+bash-4.1$ exit
+
+Script done on Sun 15 Nov 2015 07:52:51 PM EST
