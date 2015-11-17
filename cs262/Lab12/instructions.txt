@@ -1,0 +1,134 @@
+Lab 12: Working on Larger C Programs
+
+Due: 11:59 PM. Nov. 24, 2015
+
+Description:
+
+In this lab, you will simulate working on a large project containing many different files. Many times with large projects, in order to keep things neat and orderly, source and include files are distributed across several directories. Generally (but not always), source (*.c) files are kept in a directory named src/, include (*.h) files are kept in a directory named inc/ or include/, and object files are kept in a directory named obj/. The executables for large projects are also generally kept in a directory named bin/.
+You will create several source and include files, place them in the appropriate directories and create a Makefile that will compile and link an executable from these files.
+
+Background Preparation:
+
+Read the following webpages: 
+http://gcc.gnu.org/onlinedocs/cpp/Stringification.html
+https://gcc.gnu.org/onlinedocs/cpp/Ifdef.html#Ifdef
+https://gcc.gnu.org/onlinedocs/cpp/Invocation.html#Invocation  (Concentrate on the -D and -I portions)
+https://gcc.gnu.org/onlinedocs/cppinternals/Guard-Macros.html
+
+Specifications:
+
+Perform the following steps for this lab. It is strongly suggested that you perform all the steps on Zeus directly rather than on your own computer and then attempt copy them over to Zeus.
+Create a directory named Lab12
+Inside the Lab12 directory, make the following directories:
+src
+include
+obj
+bin
+Download the Makefile, Lab12.h and Lab12.c files from Blackboard and place them in their respective directories (The Makefile goes in the directory containing src/ include/ obj/ and bin/ directories)
+Look at the source code for Lab12 and notice the function calls it contains. You are to create a stub source and include file that corresponds to each function call. Name each file after the function call it contains. For example, the code for Function1() will be found in Function1.c and the function prototype will be found in Function1.h. The files you create will contain the following:
+Each source file will contain:
+ pre-processor macros to include its corresponding header file as well as Lab12.h
+The implementation of the stub function corresponding to its (file) name
+Each include file will contain:
+Guard Macros where the defined macro corresponds to the header file name
+Example, for Function1.h, the defined macro would be FUNCTION1_H
+A prototype for the corresponding function found in the source file
+The files created will be placed in the corresponding src/ and include/ directories
+For each source file, place the following code in each function:
+    int i = 0;
+    int *p = (int *) malloc(sizeof(int) * ARRAY_SIZE);
+    if (p == NULL)
+    {
+       fprintf(stderr, "Function1(): Error allocating p\n");
+       exit(1);
+    }
+
+    printf("In Function1()...\n");
+
+    for (i=0; i<ARRAY_SIZE; i++)
+    {
+        p[i]=i;
+    }
+
+    for (i=0; i<PARTIAL_SIZE; i++)
+    {
+        printf("Function1(): %s = %d,%s = %d ", PR(i),i,PR(p[i]), p[i]);
+        printf("\n");
+    }
+    
+    free(p);
+Replace the "Function1()" character strings for each code segment with the name of the corresponding function name
+Modify the Makefile, adding information as prompted by the comments in the file
+Compile your program using the make command. Run your programs to show that it executes correctly.  You should notice a lot of output.
+Creating a Library:
+
+Now that you have the code working with the source, include, object and executable files in their appropriate directories, you will create a C library with which you will compile your code. You have been using C libraries all along when compiling your labs and projects this semester. However, those libraries are system libraries, and are found on all computers that contain a C compiler.
+
+A library is basically an archive of various functions that may be as part of a program's execution. Usually, these functions perform similar tasks or have some aspect about them that requires them to be kept in the same library. An example library would be the math library, where the most common mathematical formulas are gathered.
+
+For this lab, you will create a library containing the object code for all the "functionX()" functions you created earlier in the lab. There are two types of libraries used for compiling C programs, static and dynamic. For this lab, you will be creating a static library. The command used to create a static library is the ar (archive) command. Note the similarities between this command and the tar (tape archive) command.
+
+The ar command uses files containing object code (*.o files) to create a library. These object files have already been compiled, and therefore contain all the information necessary for the linker to use them to create an executable. When the linker creates the executable, it pulls the necessary machine (object) code out of the library, and incorporates it into the executable. To create a static library, the general command is:
+
+    ar rc libsomelib.a objectfile1.o objectfile2.o objectfile3.o ...
+
+Read the manpage for ar for more information.
+
+By convention, static libraries always begin with the three letter "lib" prefix, and have a ".a" extension.
+
+You should already have compiled object files in the obj/ directory. You will use them to create a library named "liblab12.a"  To do this, create a lib/ directory where your new library will be placed. Use the example ar command given above to create your library and place it in the lib/ directory. Note that if you first remove the Lab12.o object file, you can then use the *.o wildcard to use all object files in the obj/ directory. Be aware that a library should never contain a main() function!
+
+After creating the library, you should run a separate command, ranlib, to create an index for your library. This is done with the command:
+
+    ranlib <library name>
+
+Try running this command on the library you just created.
+
+Checking your library:
+
+Once you run ranlib on your library, you can use the nm command will list the index of functions contained in your library. To see if your library was created properly, use the command:
+
+    nm liblab12.a
+
+It should list the functions that are currently contained in the library.
+
+Compiling an executable with your library:
+
+When you initially compiled the executable for lab 12, you placed all the *.o files on the gcc command line. Now that you have a library, you can just use it, along with any other specific source files to create an executable.
+
+Although you used a Makefile to compile your earlier executable, for this next step you will compile your program directly on the command line. You should now be familiar with the -I option for gcc, which lets the compiler know where some include (*.h) files may be found. You will now also use the -L option. This option works in a similar manner to -I, but instead lets the compiler know where some libraries (*.a files) may be found.
+
+Make sure that you are in the directory that contains all your bin/ src/ include/ obj/ and lib/ directories. You will create a new executable named "lab12_from_lib." The only source file you will have in your gcc command will be Lab12.c. You will use the following command:
+
+    gcc -o bin/lab12_from_lib -I./include src/Lab12.c  -L./lib -llab12
+
+Let's break this command down a bit:
+
+-o    The output file
+-I     The path to the directory containing some header files. This option usually comes before any source files are listed for the gcc command.
+The source file being compiled
+-L     The path to the directory containing libraries that will be used during linking
+-l      The name of a library that will be used. Note that with the -l option, the three character "lib" as well as the ".a" extension is not included in the name.
+Why use a library anyway?
+
+There are many reasons why libraries are important to know about when creating large C programs. Libraries are easy, compact ways to give someone access to your source code. They are also a way to "modularize" portions of source code so that similar code is all found in one place.
+
+Submission:
+
+After you have performed the steps given above and are comfortable creating executables with your makefile, and are able to create a library and use it to create a new executable, perform the following steps:
+
+Remove all the files contained in the bin/, lib/ and obj/ directories. 
+Start a typescript session in the Lab12 directory which you created. 
+Type "uname -a" to show that you are on zeus. 
+Use the ls command to list the Makefile and all the files in your src/ and inc/ directories
+Use the ls command again to show that the bin/, obj/ and lib/ directories are empty. 
+Compile your program using the make command.
+Run your program to show that it executes correctly.
+Create a library using the steps given above and place it in your lib/ directory.
+Use the gcc command along with your new library to create a separate executable (lab12_from_lib), and place it in your bin/ directory.
+Run the new executable to show that it executes correctly.
+Exit the typescript.
+Verify that your script file was created correctly by using the more (or less) command (your choice) to see the contents of the file.
+Once you are sure the file is correct, change to the directory immediately above your current Lab12 directory.
+Use the tar command to create an archive of all the files in the Lab12 directory. Name this archive Lab12_<username>_<labsection>.tar. Re-read the man page if necessary to discover the proper options to use. 
+Submit the Lab12_<username>_<labsection>.tar file to Blackboard as Lab 12.
