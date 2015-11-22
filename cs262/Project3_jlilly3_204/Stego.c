@@ -41,28 +41,39 @@ int main(int argc, char *argv[])
       exit(1);
     }
 
-  // embed two size bytes
-  int a;
-  byte lower_8 = cover_bits & 0xFF;
-  for (a = 0; a < 8; a++)
+  // embed four size bytes
+  int a, last_stop = 0;
+  unsigned int size = b.size;
+  for (a = 0; a < 4; a++)
   {
-    byte s1 = GetGray(a);
-    setlsbs(&s1, lower_8);
+    // b is the lower byte of the int
+    byte b = size & 0xFF;
+    int m;
+    // Fill the buffer with enough bits to write out the lower 8 bits of an int
+    unsigned char buffer[8];
+    for (i = 0, m = last_stop; i < 8; m++, i++)
+    {
+      buffer[i] = GetGray(m);
+    }
+    last_stop = m + 1;
+    setlsbs(buffer, b);
+    size = size >> 8;
   }
  
-  byte upper_8 = (cover_bits >> 8) & 0xFF;
-  for (a = 8; a < 16; a++)
+  // embed g num  into the file each digit gets 4 bits
+  // My g num = 00561467 = 0x00, 0x38, 0x0E, 0x43
+  byte gNum[4] = {0x00, 0x38, 0x0E, 0x43}; 
+  for (a = 0; a < 4; a++)
   {
-    byte s1 = GetGray(a);
-    setlsbs(&s1, upper_8);
+    unsigned char buffer[8];
+    for (i = 0, j = last_stop; i < 8; j++, i++) 
+    { 
+      buffer[i] = GetGray(a);
+    }
+    last_stop = j + 1;
+    setlsbs(buffer, gNum[a]);
   }
-
-
-  // embed 4 file extension characters (to make it easy for the extraction)
-  // 
-  //
-  //
-	   
+ 
   for (i=0; i<b.size; i++)
     {
       // here you embed information into the image one byte at the time
