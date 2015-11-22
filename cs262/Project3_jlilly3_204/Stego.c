@@ -4,6 +4,7 @@
 
 #include <string.h>
 #include "image.h"
+#include "Lab11_jlilly3_204.h"
 
 int main(int argc, char *argv[])
 {  
@@ -11,7 +12,6 @@ int main(int argc, char *argv[])
   struct Buffer b = {NULL, 0, 0};
   struct Image img = {0, NULL, NULL, NULL, NULL, 0, 0};
   char *s;
-  byte b0;
    
   if (argc != 4) 
     {
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     {
       buffer[i] = GetGray(m);
     }
-    last_stop = m + 1;
+    last_stop = m;
     setlsbs(buffer, b);
     size = size >> 8;
   }
@@ -70,25 +70,22 @@ int main(int argc, char *argv[])
     { 
       buffer[i] = GetGray(a);
     }
-    last_stop = j + 1;
+    last_stop = j;
     setlsbs(buffer, gNum[a]);
   }
  
   for (i=0; i<b.size; i++)
     {
       // here you embed information into the image one byte at the time
-      // note that you should change only the least significant bits of the image
       byte toInsert = GetByte(i);
-      for (j=0; j < 8; j++)
-      {
-        // The byte to insert our data into
-        int m = i + 6;
-        byte fromImageByte = GetGray(m);
-        setlsbs(&fromImageByte, toInsert);
-      }
-    
-
+      byte buffer[8];
+      for (j = 0, k = last_stop; j < 8; j++, k++)                                         
+      {     
+        buffer[j] = GetGray(k);
+      }         
+      setlsbs(buffer, toInsert); 
     }
 
   WriteImage(argv[2],img);  // output stego file (cover_file + file_to_hide)
+  return 0;
 }
