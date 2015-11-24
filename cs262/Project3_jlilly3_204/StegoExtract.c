@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     // init b
     struct Buffer b = {NULL, 0, 0};
     b.data = (byte *)malloc(sizeof(byte)*size + 1);
-    b.size = 0;
+    b.size = size;
     b.max_size = size + 1;
  
     // extract the g num
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
         
         SetByte(i, data);
     }
-
+printf("Data is %d size of byte is %d size of b is %d\n", b.data, sizeof(byte), b.size);
     WriteBinaryFile(argv[2], b);
     return 0;
 } 

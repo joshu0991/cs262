@@ -231,7 +231,7 @@ void WriteBinaryFile(char *name, struct Buffer b)
     fprintf(stderr,"Can't create output file \'%s\'\n",name);
     exit(1);
   } 
-
+printf("Data is %c Size of byte is %d, Size of b is %d\n", b.data, sizeof(byte), b.size);
   fwrite(b.data, sizeof(byte), b.size, fo);
   fclose(fo);
 }
