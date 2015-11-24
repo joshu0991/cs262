@@ -40,14 +40,16 @@ int main(int argc, char *argv[])
       printf("Cover file is not large enough %d (bits) > %d (cover_bits)\n",bits,cover_bits);
       exit(1);
     }
-
+  
   // embed four size bytes
   int a, last_stop = 0;
   unsigned int size = b.size;
-  for (a = 0; a < 4; a++)
+  printf("Size is %u\n", size);
+  for (a = 3; a >= 0; a--)
   {
-    // b is the lower byte of the int
-    byte b = size & 0xFF;
+    // Write the high order bytes out first for
+    // easy extraction.
+    byte b = (size >> 8 * a) & 0xFF;
     int m;
     // Fill the buffer with enough bits to write out the lower 8 bits of an int
     unsigned char buffer[8];
@@ -57,35 +59,52 @@ int main(int argc, char *argv[])
     }
     last_stop = m;
     setlsbs(buffer, b);
-    size = size >> 8;
+
+    int l;
+    for (i = 0, l = (last_stop - 8); i < 8; l++, i++)
+    {
+      SetGray(l, buffer[i]);
+    } 
   }
- 
+
   // embed g num  into the file each digit gets 4 bits
   // My g num = 00561467 = 0x00, 0x38, 0x0E, 0x43
-  byte gNum[4] = {0x00, 0x38, 0x0E, 0x43}; 
-  for (a = 0; a < 4; a++)
+  byte gNum[5] = {0x00, 0x00, 0x38, 0x0E, 0x43}; 
+  for (a = 0; a < 5; a++)
   {
     unsigned char buffer[8];
     for (i = 0, j = last_stop; i < 8; j++, i++) 
     { 
-      buffer[i] = GetGray(a);
+      buffer[i] = GetGray(j);
     }
     last_stop = j;
     setlsbs(buffer, gNum[a]);
+
+    int l;
+    for (i = 0, l = (last_stop - 8); i < 8; l++, i++)
+    {
+      SetGray(l, buffer[i]);
+    } 
   }
- 
+  
+  // Write out the image
   for (i=0; i<b.size; i++)
     {
       // here you embed information into the image one byte at the time
       byte toInsert = GetByte(i);
       byte buffer[8];
-      for (j = 0, k = last_stop; j < 8; j++, k++)                                         
-      {     
+      for (j = 0, k = last_stop; j < 8; j++, k++)                                           {     
         buffer[j] = GetGray(k);
       }         
       setlsbs(buffer, toInsert); 
-    }
 
-  WriteImage(argv[2],img);  // output stego file (cover_file + file_to_hide)
+      int l, q;
+      for (q = 0, l = (last_stop - 8); q < 8; l++, q++)
+      {
+        SetGray(l, buffer[q]);
+      } 
+    }
+ 
+  WriteImage(argv[2],img);  // output stego file (cover_file + file_to_hide)*/
   return 0;
 }
