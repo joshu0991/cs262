@@ -99,11 +99,6 @@ int main(int argc, char *argv[])
       }         
       last_stop = k;
       setlsbs(buffer, toInsert);
-//if (i == 0 || i == 2)
-//{
-//printf("Buffer Is \n"); 
-//print_bin(buffer);
-//}
       int l, q;
       for (q = 0, l = (last_stop - 8); q < 8; l++, q++)
       {

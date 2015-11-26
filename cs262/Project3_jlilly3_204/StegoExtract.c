@@ -64,10 +64,6 @@ int main(int argc, char *argv[])
         }
         last_index = k;
         byte data = getlsbs(buffer);
-if(i ==0)
-{
-print_bin(buffer);        
-}
         SetByte(i, data);
     }
     WriteBinaryFile(argv[2], b);
