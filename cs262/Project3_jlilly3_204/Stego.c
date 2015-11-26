@@ -88,16 +88,22 @@ int main(int argc, char *argv[])
   }
   
   // Write out the image
-  for (i=0; i<b.size; i++)
+  for (i=0; i < b.size; i++)
     {
       // here you embed information into the image one byte at the time
-      byte toInsert = GetByte(i);
+      byte toInsert = GetByte(i);;
       byte buffer[8];
-      for (j = 0, k = last_stop; j < 8; j++, k++)                                           {     
+      for (j = 0, k = last_stop; j < 8; j++, k++)
+      {     
         buffer[j] = GetGray(k);
       }         
-      setlsbs(buffer, toInsert); 
-
+      last_stop = k;
+      setlsbs(buffer, toInsert);
+//if (i == 0 || i == 2)
+//{
+//printf("Buffer Is \n"); 
+//print_bin(buffer);
+//}
       int l, q;
       for (q = 0, l = (last_stop - 8); q < 8; l++, q++)
       {

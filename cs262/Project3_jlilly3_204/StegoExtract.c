@@ -64,10 +64,12 @@ int main(int argc, char *argv[])
         }
         last_index = k;
         byte data = getlsbs(buffer);
-        
+if(i ==0)
+{
+print_bin(buffer);        
+}
         SetByte(i, data);
     }
-printf("Data is %d size of byte is %d size of b is %d\n", b.data, sizeof(byte), b.size);
     WriteBinaryFile(argv[2], b);
     return 0;
 } 
