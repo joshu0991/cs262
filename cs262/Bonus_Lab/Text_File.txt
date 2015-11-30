@@ -1,0 +1,52 @@
+100
+234.567
+This is a line of text.
+200
+345.678
+This is another line of text.
+300
+456.789
+This is not a line of text.
+400
+678.901
+
+500
+123.456
+Back to writing lines of text again.
+600
+234.567
+This is a very, very, very very very long line of text.
+700
+345.432
+Ok, this is getting tedious
+800
+456.654
+We will want to generate a much longer file for testing
+900
+567.654
+This is not the last line for this text file
+1000
+9876.543
+Aren't we done with this course yet?
+1100
+1234.567
+I am NOT looking forward to taking CS262 again!
+1200
+2468.123
+Where are you going for the Winter Break?
+1300
+0.342
+Wi nÃ¸t trei a hÃ¸liday in Sweden this yÃ«r?
+1400
+9876.543
+See the lÃ¸veli lakes. The wÃ¸ndÃ«rful telephÃ¸ne system.
+1500
+1357.924
+And mÃ¤ni interesting furry animals.
+1600
+3524.456
+Including the majestik mÃ¸Ã¸se.
+1700
+8642.123
+A MÃ¸Ã¸se once bit my sister...
+
