@@ -1,0 +1,67 @@
+Script started on Sun 29 Nov 2015 03:45:12 PM EST
+[?1034hbash-4.1$ uname 0[K0-a[K[K[K0-a[K[K[K-a
+Linux zeus-0 2.6.32-573.8.1.el6.centos.plus.x86_64 #1 SMP Tue Nov 10 18:20:27 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+bash-4.1$ ls
+cs262.pgm  grayscale.jpg  image.c  image.h.gch		Lab11_jlilly3_204.h	 Makefile			Project3_script_jlilly3_204.txt  StegoExtract.c
+ein.jpg    half.pgm	  image.h  Lab11_jlilly3_204.c	Lab11_jlilly3_204.h.gch  nethunter-logo-gray-trans.png	Stego.c
+bash-4.1$ cat [K[K[K[Kmake -j8
+gcc -Wall -g -c Stego.c
+gcc -Wall -g -c Lab11_jlilly3_204.c Lab11_jlilly3_204.h
+gcc  -c image.c image.h
+gcc Stego.o Lab11_jlilly3_204.o image.o -o Stego -Wall -g
+bash-4.1$ make StegoExtract.c [K[K[K
+gcc -Wall -g -c StegoExtract.c
+gcc StegoExtract.o Lab11_jlilly3_204.o image.o -o StegoExtract -Wall -g
+bash-4.1$ ./Stego cs262.pgm nethunter_embedded.pgm nethunter-logo-gray-trans.png 
+
+Reading input file 'cs262.pgm'
+
+Reading binary file 'nethunter-logo-gray-trans.png'
+hidden file type = <png>
+Size is 12151
+
+Writing file 'nethunter_embedded.pgm'
+bash-4.1$ ./StegoExtract nethunter_embedded.pgm nethunter_recover.png
+
+Reading input file 'nethunter_embedded.pgm'
+The size of the file was 12151
+The G number is: G00561467
+
+Writing file 'nethunter_recover.png'
+bash-4.1$ ./StegoE[K cs262.pgm grep[Kyscale_embeeded.pgm grayscale.jpg 
+
+Reading input file 'cs262.pgm'
+
+Reading binary file 'grayscale.jpg'
+hidden file type = <jpg>
+Size is 20205
+
+Writing file 'greyscale_embeeded.pgm'
+bash-4.1$ ./StegoExtract G[Kgreyscale_embeeded.pgm greyscale_recover.jph[Kg
+
+Reading input file 'greyscale_embeeded.pgm'
+The size of the file was 20205
+The G number is: G00561467
+
+Writing file 'greyscale_recover.jpg'
+bash-4.1$ ./Stego [K[K[K[K[K[K[K[K./Stego cs262.pgm c[Koutput[K[K[K[K[K[Keinstein_embee[Kdded.pgm en[Kin.jpg 
+
+Reading input file 'cs262.pgm'
+
+Reading binary file 'ein.jpg'
+hidden file type = <jpg>
+Size is 4980
+
+Writing file 'einstein_embedded.pgm'
+bash-4.1$ ./StegoExtract ein.jpg [K[K[K[K[K
+ein.jpg                einstein_embedded.pgm  
+bash-4.1$ ./StegoExtract ein_e[K[Kstein_embedded.pgm einstei[K[Ki[K[K[K_reconv[K[Kver.jpg
+
+Reading input file 'einstein_embedded.pgm'
+The size of the file was 4980
+The G number is: G00561467
+
+Writing file 'ein_recover.jpg'
+bash-4.1$ exit
+
+Script done on Sun 29 Nov 2015 03:48:53 PM EST
