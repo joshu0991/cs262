@@ -1,6 +1,4 @@
-// Joshua Lilly, G00561467
-// 11/29/2015
-// Lab 204                                                                                          
+                                                                                          
 #include <string.h>                                                                       
 #include "image.h"                                                                        
 #include "Lab11_jlilly3_204.h"                                                            
@@ -35,7 +33,7 @@ int main(int argc, char *argv[])
     }
     printf("The size of the file was %u\n", size);
 
-    // init b, which is the output
+    // init b
     struct Buffer b = {NULL, 0, 0};
     b.data = (byte *)malloc(sizeof(byte)*size + 1);
     b.size = size;
@@ -59,7 +57,6 @@ int main(int argc, char *argv[])
     // Extract the entire image
     for (i = 0; i < size; i++)
     {
-        // We will do this a byte at a time
         byte buffer[8];
         for (j = 0, k = last_index; j < 8; j++, k++)
         {
@@ -70,5 +67,7 @@ int main(int argc, char *argv[])
         SetByte(i, data);
     }
     WriteBinaryFile(argv[2], b);
+    free(b.data);
+    free (img.gray);
     return 0;
 } 
