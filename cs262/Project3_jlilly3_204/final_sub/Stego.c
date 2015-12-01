@@ -107,5 +107,7 @@ int main(int argc, char *argv[])
     }
  
   WriteImage(argv[2],img);  // output stego file (cover_file + file_to_hide)*/
+  free(b.data);
+  free(img.gray);
   return 0;
 }
